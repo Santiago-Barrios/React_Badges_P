@@ -12,10 +12,6 @@ class BadgesListItem extends React.Component {
           className="BadgesListItem__avatar"
           email={this.props.badge.email}
         />
-        {/* <img
-          className="BadgesListItem__avatar"
-          src={this.props.badge.email}
-        /> */}
         <div>
           <strong>
             {this.props.badge.firstName} {this.props.badge.lastName}
@@ -47,7 +43,6 @@ class BadgesList extends React.Component {
         <ul className="list-unstyled">
           {this.props.badges.map(badge => {
             return (
-              console.log(badge),
               <li key={badge.id}>
                 <BadgesListItem badge={badge} />
               </li>
