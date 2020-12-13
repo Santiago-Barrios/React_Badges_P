@@ -8,7 +8,6 @@ function PageError(props) {
       {props.error.message}
     </div>
   )
-  // return <div className="PageError">❌{props.error.message}😱</div>;
 }
 
 export default PageError;
