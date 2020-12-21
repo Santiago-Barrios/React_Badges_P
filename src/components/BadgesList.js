@@ -25,11 +25,43 @@ class BadgesListItem extends React.Component {
   }
 }
 
-class BadgesList extends React.Component {
-  render() {
-    if (this.props.badges.length === 0) {
+function useSearchBadges(badges) {
+  const [query, setQuery] = React.useState('');
+  const [filterBadges, setFilterBadges] = React.useState(badges)
+
+  React.useMemo( () => { 
+    const result = badges.filter( badge => {
+    return `${badge.firstName} ${badge.lastName}`
+      .toLowerCase()
+      .includes(query.toLowerCase());
+    })
+
+    setFilterBadges(result)
+ }, [ badges, query]);
+
+ return  { query, setQuery, filterBadges}
+}
+
+function BadgesList (props) {
+
+  const badges = props.badges;
+
+  const {query, setQuery, filterBadges} = useSearchBadges(badges);
+
+    if (filterBadges.length === 0) {
       return (
         <div>
+          <div className="form-group">
+            <label htmlFor=""> Filter Badges </label>
+            <input 
+              type="text" 
+              className="form-control"
+              vaue={query}
+              onChange={ (e) => {
+                setQuery(e.target.value)
+              }}
+              />
+          </div>
           <h3>No badges were found</h3>
           <Link className="btn btn-primary" to="/badges/new">
             Create new badge
@@ -40,8 +72,19 @@ class BadgesList extends React.Component {
 
     return (
       <div className="BadgesList">
+        <div className="form-group">
+          <label htmlFor=""> Filter Badges </label>
+          <input 
+            type="text" 
+            className="form-control"
+            vaue={query}
+            onChange={ (e) => {
+              setQuery(e.target.value)
+            }}
+            />
+        </div>
         <ul className="list-unstyled">
-          {this.props.badges.map(badge => {
+          {filterBadges.map(badge => {
             return (
               <li key={badge.id}>
                 <Link
@@ -55,7 +98,6 @@ class BadgesList extends React.Component {
         </ul>
       </div>
     );
-  }
 }
 
 export default BadgesList;
